@@ -3,7 +3,7 @@
     <div class="modal-content">
       <div class="modal-header">
         Sign In & Sign Up
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>						
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
       <section>
         <div class="modal-body">
@@ -12,24 +12,37 @@
               <div class="toggle"><i class="fa fa-times fa-pencil"></i>
               <div class="tooltip">Click Me</div>
               </div>
+
+              @if ($errors->any())
+                <div style="color: red; padding: 10px 40px 0;">
+                  @foreach ($errors->all() as $error)
+                    <div>{{ $error }}</div>
+                  @endforeach
+                </div>
+              @endif
+
               <div class="form">
-              <h3>Login to your account</h3>
-              <form action="#" method="post">
-                <input type="text" name="Username" placeholder="Username" required="">
-                <input type="password" name="Password" placeholder="Password" required="">
-                <input type="submit" value="Login">
-              </form>
+                <h3>Login to your account</h3>
+                <form action="{{ route('login.post') }}" method="post">
+                  @csrf
+                  <input type="email" name="email" placeholder="Email" value="{{ old('email') }}" required>
+                  <input type="password" name="password" placeholder="Password" required>
+                  <input type="submit" value="Login">
+                </form>
               </div>
+
               <div class="form">
-              <h3>Create an account</h3>
-              <form action="#" method="post">
-                <input type="text" name="Username" placeholder="Username" required="">
-                <input type="password" name="Password" placeholder="Password" required="">
-                <input type="email" name="Email" placeholder="Email Address" required="">
-                <input type="text" name="Phone" placeholder="Phone Number" required="">
-                <input type="submit" value="Register">
-              </form>
+                <h3>Create an account</h3>
+                <form action="{{ route('register') }}" method="post">
+                  @csrf
+                  <input type="text" name="name" placeholder="Nama" required>
+                  <input type="email" name="email" placeholder="Email Address" required>
+                  <input type="password" name="password" placeholder="Password (min. 8 karakter)" required>
+                  <input type="password" name="password_confirmation" placeholder="Ulangi Password" required>
+                  <input type="submit" value="Register">
+                </form>
               </div>
+
               <div class="cta"><a href="#">Forgot your password?</a></div>
             </div>
           </div>
@@ -42,7 +55,7 @@
   $('.toggle').click(function(){
     // Switches the Icon
     $(this).children('i').toggleClass('fa-pencil');
-    // Switches the forms  
+    // Switches the forms
     $('.form').animate({
     height: "toggle",
     'padding-top': 'toggle',

@@ -118,20 +118,82 @@
           <div class="all-comments-info">
             <a href="#">Comments</a>
             <div class="agile-info-wthree-box">
-              <form>
-                <input type="text" placeholder="Name" required="">			           					   
-                <input type="text" placeholder="Email" required="">
-                <input type="text" placeholder="Phone" required="">
-                <textarea placeholder="Message" required=""></textarea>
-                <input type="submit" value="SEND">
-                <div class="clearfix"> </div>
-              </form>
+              @if (session('success'))
+                <p style="color: green;">{{ session('success') }}</p>
+              @endif
+
+              @auth
+                @if (auth()->user()->role->name === 'user')
+                  @if ($errors->any())
+                    <div style="color: red;">
+                      @foreach ($errors->all() as $error)
+                        <div>{{ $error }}</div>
+                      @endforeach
+                    </div>
+                  @endif
+                  <form action="{{ route('kritik.store', $film->id) }}" method="post">
+                    @csrf
+                    <div id="star-rating" style="margin-bottom: 10px;">
+                      <input type="hidden" name="rating" id="rating-value" value="{{ old('rating') }}">
+                      @for ($i = 1; $i <= 5; $i++)
+                        <i class="fa fa-star-o star-item" data-value="{{ $i }}"
+                           style="font-size: 30px; cursor: pointer; color: #000; margin-right: 4px;"></i>
+                      @endfor
+                    </div>
+                    <script>
+                    (function () {
+                      var box = document.getElementById('star-rating');
+                      var input = document.getElementById('rating-value');
+                      var stars = box.querySelectorAll('.star-item');
+
+                      function paint(value) {
+                        stars.forEach(function (s) {
+                          var on = parseInt(s.dataset.value) <= value;
+                          s.classList.toggle('fa-star', on);
+                          s.classList.toggle('fa-star-o', !on);
+                        });
+                      }
+
+                      stars.forEach(function (s) {
+                        s.addEventListener('click', function () {
+                          input.value = s.dataset.value;
+                          paint(parseInt(s.dataset.value));
+                        });
+                      });
+
+                      paint(parseInt(input.value) || 0);
+
+                      box.closest('form').addEventListener('submit', function (e) {
+                        if (!input.value) {
+                          e.preventDefault();
+                          alert('Pilih rating bintang dulu');
+                        }
+                      });
+                    })();
+                    </script>
+                    <textarea name="comment" placeholder="Tulis komentar / kritik" required>{{ old('comment') }}</textarea>
+                    <input type="submit" value="SEND">
+                    <div class="clearfix"> </div>
+                  </form>
+                @else
+                  <p>Admin tidak dapat memberikan komentar.</p>
+                @endif
+              @else
+                <p>Silakan <a href="#" data-toggle="modal" data-target="#myModal">login</a> untuk memberikan komentar.</p>
+              @endauth
             </div>
           </div>
           <div class="media-grids">
             @foreach ($comments as $comment)
               <div class="media">
-                <h5>{{ $comment->user_id }}</h5>
+                <h5>
+                  {{ $comment->user->name ?? 'User' }}
+                  <span style="color: #000;">
+                    @for ($i = 1; $i <= 5; $i++)
+                      <i class="fa {{ $i <= $comment->rating ? 'fa-star' : 'fa-star-o' }}"></i>
+                    @endfor
+                  </span>
+                </h5>
                 <div class="media-left">
                   <a href="#">
                     <img src="{{ asset('storage/images/user.jpg') }}" title="One movies" alt=" " />

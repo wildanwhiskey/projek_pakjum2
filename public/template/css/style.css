@@ -126,6 +126,29 @@ input[type="submit"],.agileinfo_chat a,.w3ls_footer_grid1_left p a,.w3l_sign_in_
 .w3l_sign_in_register ul li i,.w3l_sign_in_register ul li:first-child{
 	padding-right:1em;
 }
+.w3l_sign_in_register ul li .admin-header-action{
+	display:inline-block;
+	width:120px;
+	height:45px;
+	margin:0;
+	padding:0;
+	border:0;
+	border-radius:0;
+	background:#FF8D1B;
+	color:#fff;
+	font-family:inherit;
+	font-size:14px;
+	font-weight:bold;
+	line-height:45px;
+	text-align:center;
+	text-transform:uppercase;
+	box-sizing:border-box;
+	cursor:pointer;
+}
+.w3l_sign_in_register ul li .admin-header-action:hover{
+	background:#212121;
+	color:#fff;
+}
 /*-- //header --*/
 /*-- nav --*/
 .navbar-default {

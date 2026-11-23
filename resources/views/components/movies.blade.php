@@ -89,7 +89,7 @@
                               <span class="frist" aria-hidden="true">{{ $numberPage }}</span>
                             </li>
                           @else
-                            <li><a href="?page={{ $numberPage }}" class="frist">{{ $numberPage }}</a></li>
+                            <li><a href="{{ $films->url($numberPage) }}" class="frist">{{ $numberPage }}</a></li>
                           @endif
                         @endfor
                         {{-- Number Page/> --}}
